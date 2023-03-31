@@ -10,7 +10,8 @@ import {
 } from "@aws-amplify/ui-react";
 
 // @ts-ignore
-function App({signOut}: any) {
+// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+function  App({signOut}: any) {
 
   return (
     <View className="App">
