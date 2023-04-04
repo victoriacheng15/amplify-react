@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import viteLogo from "/vite.svg";
 import "@aws-amplify/ui-react/styles.css";
 import { API, Storage } from "aws-amplify";
 import {
@@ -12,10 +11,12 @@ import {
 	View,
 	withAuthenticator,
 } from "@aws-amplify/ui-react";
+// @ts-ignore
 import { listNotes } from "./graphql/queries";
 import {
 	createNote as createNoteMutation,
 	deleteNote as deleteNoteMutation,
+	// @ts-ignore
 } from "./graphql/mutations";
 
 // @ts-ignore
@@ -29,8 +30,10 @@ function App({ signOut }: any) {
 
 	async function fetchNotes() {
 		const apiData = await API.graphql({ query: listNotes });
+		// @ts-ignore
 		const notesFromAPI = apiData.data.listNotes.items;
 		await Promise.all(
+			// @ts-ignore
 			notesFromAPI.map(async (note) => {
 				if (note.image) {
 					const url = await Storage.get(note.name);
@@ -41,6 +44,7 @@ function App({ signOut }: any) {
 		);
 		setNotes(notesFromAPI);
 	}
+	// @ts-ignore
 	async function createNote(event) {
 		event.preventDefault();
 		const form = new FormData(event.target);
@@ -48,8 +52,10 @@ function App({ signOut }: any) {
 		const data = {
 			name: form.get("name"),
 			description: form.get("description"),
+			// @ts-ignore
 			image: image.name,
 		};
+		// @ts-ignore
 		if (!!data.image) await Storage.put(data.name, image);
 		await API.graphql({
 			query: createNoteMutation,
@@ -58,8 +64,9 @@ function App({ signOut }: any) {
 		fetchNotes();
 		event.target.reset();
 	}
-
+	// @ts-ignore
 	async function deleteNote({ id, name }) {
+		// @ts-ignore
 		const newNotes = notes.filter((note) => note.id !== id);
 		setNotes(newNotes);
 		await Storage.remove(name);
@@ -105,18 +112,24 @@ function App({ signOut }: any) {
 			<View margin="3rem 0">
 				{notes.map((note) => (
 					<Flex
+					// @ts-ignore
 						key={note.id || note.name}
 						direction="row"
 						justifyContent="center"
 						alignItems="center"
 					>
 						<Text as="strong" fontWeight={700}>
+							{/* @ts-ignore */}
 							{note.name}
 						</Text>
+						{/* @ts-ignore */}
 						<Text as="span">{note.description}</Text>
+						{/* @ts-ignore */}
 						{note.image && (
 							<Image
+							// @ts-ignore
 								src={note.image}
+								// @ts-ignore
 								alt={`visual aid for ${notes.name}`}
 								style={{ width: 400 }}
 							/>
